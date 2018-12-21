@@ -89,3 +89,5 @@ class PPOAgent(BaseAgent):
 
         steps = config.rollout_length * config.num_workers
         self.total_steps += steps
+        
+        return {'s': states, 'a': actions}
