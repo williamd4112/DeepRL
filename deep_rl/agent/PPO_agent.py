@@ -21,6 +21,14 @@ class PPOAgent(BaseAgent):
         self.states = self.task.reset()
         self.states = config.state_normalizer(self.states)
 
+    def eval_step(self, state):
+        self.config.state_normalizer.set_read_only()
+        state = self.config.state_normalizer(state)
+        prediction = self.network(state)
+        action = prediction['a']
+        self.config.state_normalizer.unset_read_only()
+        return to_np(action)
+
     def step(self):
         config = self.config
         storage = Storage(config.rollout_length)
